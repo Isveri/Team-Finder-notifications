@@ -1,4 +1,4 @@
-package com.evi.teamfindernotifications.kafka.model;
+package com.evi.teamfindernotifications.messaging.model;
 
 import lombok.*;
 
