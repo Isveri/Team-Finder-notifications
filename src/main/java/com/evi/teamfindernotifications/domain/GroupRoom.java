@@ -29,7 +29,7 @@ public class GroupRoom {
     @NotBlank
     private String description;
 
-    @ManyToMany(mappedBy = "groupRooms",cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "groupRooms",cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
 
 

@@ -34,7 +34,7 @@ public class User implements UserDetails, CredentialsContainer {
     private String password;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_groups",
             joinColumns = @JoinColumn(name = "user_id"),

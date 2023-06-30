@@ -33,7 +33,7 @@ public class NotificationMessageConverter implements MessageConverter {
             payload = mapper.writeValueAsString(notification);
             LOGGER.info("outbound json='{}'", payload);
         } catch (JsonProcessingException e) {
-            LOGGER.error("error converting form person", e);
+            LOGGER.error("error converting from notification", e);
         }
 
         TextMessage message = session.createTextMessage();
@@ -52,7 +52,7 @@ public class NotificationMessageConverter implements MessageConverter {
         try {
             notification = mapper.readValue(payload, Notification.class);
         } catch (Exception e) {
-            LOGGER.error("error converting to person", e);
+            LOGGER.error("error converting to notification", e);
         }
 
         return notification;

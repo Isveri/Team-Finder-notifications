@@ -22,6 +22,12 @@ public class JmsNotificationListener {
     public void handleNotification(Notification notification) {
         if (notification.getNotificationType() == Notification.NotificationType.FRIENDREQUEST) {
             sseService.sendSseFriendEvent(CustomNotificationDTO.builder().type(CustomNotification.NotifType.FRIENDREQUEST).build(), notification.getUserId());
+        }else if (notification.getNotificationType() == Notification.NotificationType.REMOVED) {
+            sseService.sendSseEventToUser(CustomNotificationDTO.builder().type(CustomNotification.NotifType.REMOVED).build(), notification.getGroupId(), notification.getUserId());
+        }else if(notification.getNotificationType() == Notification.NotificationType.INFO){
+            sseService.sendSseEventToUser(CustomNotificationDTO.builder().type(CustomNotification.NotifType.INFO).build(), notification.getGroupId(), null);
+        }else{
+            sseService.sendSseFriendEvent(CustomNotificationDTO.builder().type(CustomNotification.NotifType.PRIVATE_MESSAGE).build(), notification.getUserId());
         }
     }
 }

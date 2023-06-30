@@ -19,5 +19,6 @@ public class Notification {
 
     private Long groupId;
     private Long userId;
+    private String msg;
     private NotificationType notificationType;
 }
