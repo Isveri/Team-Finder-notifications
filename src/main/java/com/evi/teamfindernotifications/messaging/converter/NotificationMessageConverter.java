@@ -16,7 +16,6 @@ import javax.jms.TextMessage;
 
 
 @Component
-@Profile("temp")
 public class NotificationMessageConverter implements MessageConverter {
 
     private static final Logger LOGGER =

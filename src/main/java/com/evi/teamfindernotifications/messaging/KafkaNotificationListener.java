@@ -15,7 +15,7 @@ public class KafkaNotificationListener {
 
     private final SseService sseService;
 
-    //TODO POPRAWIC TEN SYSTEM BO NA ODWAL JEST
+    //TODO POPRAWIC TEN SYSTEM BO ZLE TO WYGLADA
     @KafkaListener(topics = "notifications.topic", groupId = "notifs")
     public void handleNotification(Notification notification){
         if (notification.getNotificationType() == Notification.NotificationType.FRIENDREQUEST) {
