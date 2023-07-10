@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@ConditionalOnProperty(prefix = "notification", name = "service",havingValue = "kafka")
+@ConditionalOnProperty(prefix = "notification", name = "service", havingValue = "kafka")
 public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")

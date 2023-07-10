@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Entity
 public class CustomNotification {
-    public enum NotifType{
+    public enum NotifType {
         REMOVED,
         INFO,
         WARNING,
@@ -33,10 +33,10 @@ public class CustomNotification {
     private NotifType type;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="group_id")
+    @JoinColumn(name = "group_id")
     private GroupRoom groupRoom;
 }

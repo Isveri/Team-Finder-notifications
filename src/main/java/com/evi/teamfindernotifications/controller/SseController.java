@@ -16,7 +16,7 @@ public class SseController {
 
     private final SseService sseService;
 
-    @GetMapping("/info")
+    @GetMapping
     public SseEmitter notifyUser() throws IOException {
         return sseService.createEmitter();
     }

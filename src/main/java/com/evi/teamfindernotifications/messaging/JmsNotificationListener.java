@@ -10,9 +10,11 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import static com.evi.teamfindernotifications.utils.NotificationHelper.handleNotificationType;
+
 @Service
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "notification", name = "service",havingValue = "activemq")
+@ConditionalOnProperty(prefix = "notification", name = "service", havingValue = "activemq")
 public class JmsNotificationListener {
 
 
@@ -20,14 +22,8 @@ public class JmsNotificationListener {
 
     @JmsListener(destination = "notifications")
     public void handleNotification(Notification notification) {
-        if (notification.getNotificationType() == Notification.NotificationType.FRIENDREQUEST) {
-            sseService.sendSseFriendEvent(CustomNotificationDTO.builder().type(CustomNotification.NotifType.FRIENDREQUEST).build(), notification.getUserId());
-        }else if (notification.getNotificationType() == Notification.NotificationType.REMOVED) {
-            sseService.sendSseEventToUser(CustomNotificationDTO.builder().msg(notification.getMsg()).type(CustomNotification.NotifType.REMOVED).build(), notification.getGroupId(), notification.getUserId());
-        }else if(notification.getNotificationType() == Notification.NotificationType.INFO){
-            sseService.sendSseEventToUser(CustomNotificationDTO.builder().msg(notification.getMsg()).type(CustomNotification.NotifType.INFO).build(), notification.getGroupId(), null);
-        }else{
-            sseService.sendSseFriendEvent(CustomNotificationDTO.builder().msg(notification.getMsg()).type(CustomNotification.NotifType.PRIVATE_MESSAGE).build(), notification.getUserId());
-        }
+
+        handleNotificationType(notification, sseService);
+
     }
 }

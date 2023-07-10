@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(prefix = "notification", name = "service",havingValue = "activemq")
+@ConditionalOnProperty(prefix = "notification", name = "service", havingValue = "activemq")
 public class BrokerConfig {
 
     @Bean

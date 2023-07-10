@@ -16,13 +16,13 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<CustomNotificationDTO>> getAllNotifications() {
         return ResponseEntity.ok(notificationService.getAllNotifications());
     }
 
-    @DeleteMapping("/delete/{notifId}")
-    public ResponseEntity<Void> removeNotification(@PathVariable Long notifId){
+    @DeleteMapping("/{notifId}")
+    public ResponseEntity<Void> removeNotification(@PathVariable Long notifId) {
         notificationService.removeNotification(notifId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

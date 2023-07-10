@@ -11,6 +11,7 @@ import com.evi.teamfindernotifications.repository.NotificationRepository;
 import com.evi.teamfindernotifications.repository.UserRepository;
 import com.evi.teamfindernotifications.security.model.User;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.GroupIdNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -38,23 +39,23 @@ public class SseServiceImpl implements SseService {
     public void sendSseEventToUser(CustomNotificationDTO customNotificationDTO, Long groupId, Long modifiedUserId) {
         List<Long> usersId = new ArrayList<>();
 
-        GroupRoom groupRoom = groupRepository.findById(groupId).orElseThrow(null);
-        groupRoom.getUsers().forEach((user -> {
-                if(!Objects.equals(user.getId(), modifiedUserId)) {
-                    usersId.add(user.getId());
-                    customNotificationDTO.setGroupRoom(groupRoomMapper.mapGroupRoomToGroupNotifInfoDTO(groupRoom));
-                    CustomNotification customNotification = notificationMapper.mapCustomNotificationDTOToCustomNotification(customNotificationDTO);
-                    customNotification.setUser(user);
-                    customNotification.setGroupRoom(groupRoom);
-                    notificationRepository.save(customNotification);
-                }
-        }));
+        Optional<GroupRoom> groupRoom = groupRepository.findById(groupId);
+        groupRoom.ifPresent(room -> room.getUsers().forEach((user -> {
+            if (!Objects.equals(user.getId(), modifiedUserId)) {
+                usersId.add(user.getId());
+                customNotificationDTO.setGroupRoom(groupRoomMapper.mapGroupRoomToGroupNotifInfoDTO(room));
+                CustomNotification customNotification = notificationMapper.mapCustomNotificationDTOToCustomNotification(customNotificationDTO);
+                customNotification.setUser(user);
+                customNotification.setGroupRoom(room);
+                notificationRepository.save(customNotification);
+            }
+        })));
         usersId.forEach((id) -> {
                     sendMsgToEmitter(customNotificationDTO, id);
                 }
         );
-        if (modifiedUserId != null && REMOVED.equals(customNotificationDTO.getType())) {
-            sendRemovedNotif(customNotificationDTO, groupRoom, modifiedUserId);
+        if (modifiedUserId != null && REMOVED.equals(customNotificationDTO.getType()) && groupRoom.isPresent()) {
+            sendRemovedNotif(customNotificationDTO, groupRoom.get(), modifiedUserId);
         }
     }
 
@@ -70,7 +71,7 @@ public class SseServiceImpl implements SseService {
 
     @Override
     public void sendSseFriendEvent(CustomNotificationDTO customNotificationDTO, Long userId) {
-        sendMsgToEmitter(customNotificationDTO,userId);
+        sendMsgToEmitter(customNotificationDTO, userId);
     }
 
     @Override

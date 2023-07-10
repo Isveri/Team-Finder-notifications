@@ -29,12 +29,12 @@ public class GroupRoom {
     @NotBlank
     private String description;
 
-    @ManyToMany(mappedBy = "groupRooms",cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "groupRooms", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
 
 
-    @ManyToOne(cascade=CascadeType.MERGE)
-    @JoinColumn(name="groupLeader_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "groupLeader_id")
     private User groupLeader;
 
 
