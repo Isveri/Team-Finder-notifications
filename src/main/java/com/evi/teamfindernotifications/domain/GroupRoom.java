@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Where(clause = "deleted=false")
 public class GroupRoom {
 
     @Id
